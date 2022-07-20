@@ -6,6 +6,7 @@ import com.amazon.ata.deliveringonourpromise.types.OrderItem;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.deliveringonourpromise.types.PromiseHistory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,21 +42,25 @@ public class GetPromiseHistoryByOrderIdActivity {
 
         Order order = orderDao.get(orderId);
 
-        List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
-        OrderItem customerOrderItem = null;
-        if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
-            customerOrderItem = customerOrderItems.get(0);
-        }
+                List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
+                OrderItem customerOrderItem = null;
+                if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
+                    customerOrderItem = customerOrderItems.get(0);
+                }
 
-        PromiseHistory history = new PromiseHistory(order);
-        if (customerOrderItem != null) {
-            List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
-            for (Promise promise : promises) {
-                promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
-                history.addPromise(promise);
-            }
-        }
-
-        return history;
+                PromiseHistory history = new PromiseHistory(order);
+                if (customerOrderItem != null) {
+                    List<Promise> promises = promiseDao.get(customerOrderItem.getCustomerOrderItemId());
+                    for (Promise promise : promises) {
+                        promise.setConfidence(customerOrderItem.isConfidenceTracked(), customerOrderItem.getConfidence());
+                        history.addPromise(promise);
+                    }
+                }
+                Order emptyOrder = null;
+                PromiseHistory emptyHistory = new PromiseHistory(emptyOrder);
+                if (orderDao.get(orderId).getCustomerOrderItemList() == null) {
+                    return emptyHistory;
+                }
+                return history;
     }
 }

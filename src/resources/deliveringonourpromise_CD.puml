@@ -116,6 +116,19 @@ PromiseDao --> DeliveryPromiseServiceClient
 PromiseDao --> OrderManipulationAuthorityClient
 PromiseDao ..|> ReadOnlyDao
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 @enduml
 
 

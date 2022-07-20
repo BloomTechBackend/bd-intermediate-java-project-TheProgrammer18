@@ -79,7 +79,12 @@ public final class OrderDatastore {
         for (OrderItemData itemData : orderData.getCustomerOrderItemList()) {
             itemData.setOrderId(orderId);
         }
-
+        List<OrderItemData> emptyOrder = new ArrayList<>();
+        if (orderData == null) {
+            for (OrderItemData itemData : emptyOrder) {
+                itemData.setOrderId(orderId);
+            }
+        }
         return orderData;
     }
 

@@ -36,8 +36,6 @@ public class Shell {
     private PromiseHistoryClient promiseHistoryClient;
     private ATAUserHandler inputHandler;
 
-    // FIXME: Added to cause a problem with Spotbug
-    private String unusedPrivateString;
 
     /**
      * Constructs a Shell instance that will use the given service client.
@@ -89,11 +87,25 @@ public class Shell {
             response = inputHandler.getString(ORDER_ID_PROMPT, INLINE_PROMPT).trim();
         } while ("".equals(response));
 
-        PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
-        if (promiseHistory.getOrder() == null) {
-            return String.format(UNKNOWN_ORDER_MESSAGE, response);
+        if (response.length() == 19) {
+                PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
+                if (promiseHistory.getOrder().orderId == null
+                            && promiseHistory.getOrder().orderDate == null
+                            && promiseHistory.getOrder().marketplaceId == null
+                            && promiseHistory.getOrder().shipOption == null) {
+
+                    return "";
+
+                }
+                if (promiseHistory.getOrder() == null) {
+                    return String.format(UNKNOWN_ORDER_MESSAGE, response);
+                } else {
+                    return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
+                }
+
+        } else {
+            return "Invalid order ID, please enter valid order ID.";
         }
-        return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
     }
 
     /**

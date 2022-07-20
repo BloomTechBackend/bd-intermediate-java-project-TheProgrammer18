@@ -9,6 +9,7 @@ import com.amazon.ata.ordermanipulationauthority.OrderResultItem;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * DAO implementation for orders.
@@ -38,7 +39,8 @@ public class OrderDao implements ReadOnlyDao<String, Order> {
         OrderResult omaOrder = omaClient.getCustomerOrderByOrderId(orderId);
 
         if (null == omaOrder) {
-            return null;
+            Order.Builder orderBuilder = Order.builder();
+            return orderBuilder.build();
         }
 
         if (! new OrderFieldValidator().isValidOrderId(orderId)) {
@@ -58,7 +60,6 @@ public class OrderDao implements ReadOnlyDao<String, Order> {
                                          .withCustomerOrderItemList(orderItems)
                                          .withOrderDate(omaOrder.getOrderDate())
                                          .withShipOption(omaOrder.getShipOption());
-
         return orderBuilder.build();
     }
 

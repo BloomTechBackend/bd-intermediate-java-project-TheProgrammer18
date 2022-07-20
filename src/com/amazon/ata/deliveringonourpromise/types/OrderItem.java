@@ -28,14 +28,14 @@ import java.util.Objects;
  *
  */
 public class OrderItem {
-    private String customerOrderItemId;
-    private String orderId;
-    private String asin;
-    private String merchantId;
-    private int quantity;
-    private String title;
+    private String customerOrderItemId = "0";
+    private String orderId = "0";
+    private String asin = "0";
+    private String merchantId = "0";
+    private int quantity = 0;
+    private String title = "0";
     private boolean isConfidenceTracked;
-    private int confidence;
+    private int confidence = 0;
 
     // for Builder's eyes only.
     private OrderItem() { }

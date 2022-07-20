@@ -1,0 +1,73 @@
+Mastery task 1
+
+A CS representative has filed a bug report, stating that when they
+request the promise history for order ID 111-749023-7630574, the Missed Promise CLI prints a weird message and exits:
+
+Running CLI! Please enter the orderId you would like to view the Promise History for.
+> 111-749023-7630574 Error encountered. Exiting. Thank you for using the Promise History CLI. Have a great day!
+
+________________________________________________________________________________________________________________________
+
+Problem: when order ID 111-749023-7630574 is inputted the console states an "Error encountered. Exiting." then exits the
+program.
+
+Possible causes:
+1) the order ID is invalid
+2) there is no order listed under that order ID
+3) the order ID is miss-formatted
+
+
+testing 1: X
+
+testing 2: X
+
+testing 3: O
+111-749023-7630574 <-- invalid order ID (not a full orderID missing an extra integer)
+900-0000000-0000000
+900-3746401-0000001
+900-3746401-0000002
+900-3746401-0000003
+
+conclusion orderID is miss-formatted due to it not having a full order ID.
+
+Fixing the bug:
+1) first check if the order ID has the correct number of integers
+2) if so then the software continues
+3) if not then the code will display "non-valid order ID please re-enter a valid order ID."
+
+
+________________________________________________________________________________________________________________________
+
+Problem 2: when entering a valid order ID with a non-existent order an exception is thrown and the program exits
+
+Possible causes:
+1) when using the response to grab the order
+2) the getOrder() is getting a non-null order instead of order and the if statement does not work
+
+testing 1:
+Given:
+    order ID: 900-0000000-0000000
+When:
+    grabs order using order ID and checks if order is a null value
+Then:
+    If so the program displays a message and continues running
+    if not then the program displays the order and continues running
+
+testing 2:
+Given:
+    order ID: 900-0000000-0000000
+When:
+    getOrder() gets the order and either returns null or a non-null order
+Then:
+    the order is displayed but if the order is empty an exception is thrown
+
+testing 3:
+Given:
+    order ID: order ID: 900-0000000-0000000
+When:
+    getPromiseHistoryByOrderID() --> PromiseHistoryClient --> PromiseHistory.getPromiseHistoryByOrderId()--> exception
+Then:
+    exception happens in promiseHistoryClient and PromiseHistory.getPromiseHistoryByOrderID()
+
+
+
