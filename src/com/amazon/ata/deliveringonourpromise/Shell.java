@@ -83,7 +83,9 @@ public class Shell {
             response = inputHandler.getString(ORDER_ID_PROMPT, INLINE_PROMPT).trim();
         } while ("".equals(response));
 
-        if (response.length() == 19) {
+        int responseLength = response.length();
+
+        if (responseLength == 19) {
             PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
             if (promiseHistory.getOrder().orderId == null &&
                     promiseHistory.getOrder().orderDate == null &&
