@@ -30,6 +30,7 @@ public class Shell {
             "Please enter the orderId you would like to view the Promise History for.";
     private static final String UNKNOWN_ORDER_MESSAGE =
             "Unable to find any order data for orderId: %s. Please check your order id and try again.";
+    private static final int  length = 19;
 
     private static final String INLINE_PROMPT = "> ";
 
@@ -83,7 +84,7 @@ public class Shell {
             response = inputHandler.getString(ORDER_ID_PROMPT, INLINE_PROMPT).trim();
         } while ("".equals(response));
 
-        if (response.length() != 19) {
+        if (response.length() != length) {
             return "Unable to find any order data for orderId: " + response + ". " +
                     "Please check your order id and try again." ;
         }
