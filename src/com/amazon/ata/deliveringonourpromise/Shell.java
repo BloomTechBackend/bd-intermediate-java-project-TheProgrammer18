@@ -54,8 +54,7 @@ public class Shell {
      *
      * @param args command line args (ignored).
      * */
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
@@ -104,7 +103,7 @@ public class Shell {
                 }
 
         } else {
-            return "Invalid order ID, please enter valid order ID.";
+            return "Unable to find any order data for orderId: " + response + ". " + "Please check your order id and try again." ;
         }
     }
 
