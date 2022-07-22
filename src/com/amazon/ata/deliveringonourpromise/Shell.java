@@ -83,9 +83,6 @@ public class Shell {
             response = inputHandler.getString(ORDER_ID_PROMPT, INLINE_PROMPT).trim();
         } while ("".equals(response));
 
-        int responseLength = response.length();
-
-        if (responseLength == 19) {
             PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
             if (promiseHistory.getOrder().orderId == null &&
                     promiseHistory.getOrder().orderDate == null &&
@@ -101,11 +98,6 @@ public class Shell {
             } else {
                 return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
             }
-
-        } else {
-            return "Unable to find any order data for orderId: " + response + ". " +
-                    "Please check your order id and try again." ;
-        }
     }
 
     /**
