@@ -3,11 +3,10 @@ package com.amazon.ata.deliveringonourpromise.promisehistoryservice;
 import com.amazon.ata.deliveringonourpromise.activity.GetPromiseHistoryByOrderIdActivity;
 import com.amazon.ata.deliveringonourpromise.types.PromiseHistory;
 
-import java.util.Objects;
 
 /**
  * Client class for accessing the Promise History APIs.
- * Currently supports the GetPromiseHistoryByOrderId API.
+ * Currently, supports the GetPromiseHistoryByOrderId API.
  */
 public class PromiseHistoryClient {
 

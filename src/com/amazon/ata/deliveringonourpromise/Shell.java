@@ -58,14 +58,11 @@ public class Shell {
         Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
-        try
-        {
-            do
-            {
+        try {
+            do {
                 System.out.println(shell.handleUserRequest());
             } while (shell.userHasAnotherRequest());
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Error encountered. Exiting.");
         }
 
@@ -87,23 +84,25 @@ public class Shell {
         } while ("".equals(response));
 
         if (response.length() == 19) {
-                PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
-                if (promiseHistory.getOrder().orderId == null
-                            && promiseHistory.getOrder().orderDate == null
-                            && promiseHistory.getOrder().marketplaceId == null
-                            && promiseHistory.getOrder().shipOption == null) {
+            PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
+            if (promiseHistory.getOrder().orderId == null &&
+                    promiseHistory.getOrder().orderDate == null &&
+                    promiseHistory.getOrder().marketplaceId == null &&
+                    promiseHistory.getOrder().shipOption == null) {
 
-                    return "";
+                return "";
 
-                }
-                if (promiseHistory.getOrder() == null) {
-                    return String.format(UNKNOWN_ORDER_MESSAGE, response);
-                } else {
-                    return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
-                }
+            }
+
+            if (promiseHistory.getOrder() == null) {
+                return String.format(UNKNOWN_ORDER_MESSAGE, response);
+            } else {
+                return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
+            }
 
         } else {
-            return "Unable to find any order data for orderId: " + response + ". " + "Please check your order id and try again." ;
+            return "Unable to find any order data for orderId: " + response + ". " +
+                    "Please check your order id and try again." ;
         }
     }
 
