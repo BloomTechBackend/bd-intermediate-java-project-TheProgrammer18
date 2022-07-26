@@ -71,7 +71,14 @@ public class Order {
      * @return a list containing all of the order items in this order
      */
     public List<OrderItem> getCustomerOrderItemList() {
-        return customerOrderItemList;
+        if (customerOrderItemList == null) {
+            return null;
+        }
+
+        List<OrderItem> copyList = new ArrayList<>(customerOrderItemList);
+        return copyList;
+
+//        return customerOrderItemList;
     }
 
     public String getShipOption() {
@@ -137,7 +144,8 @@ public class Order {
          * @return updated Builder
          */
         public Builder withCustomerOrderItemList(List<OrderItem> customerOrderItemList) {
-            this.customerOrderItemList = customerOrderItemList;
+            List<OrderItem> copyList = new ArrayList<>(customerOrderItemList);
+            this.customerOrderItemList = copyList;
             return this;
         }
 

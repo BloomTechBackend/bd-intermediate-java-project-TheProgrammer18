@@ -25,12 +25,12 @@ public class Shell {
     public static final String SHOW_FIXTURES_FLAG = "--show-fixtures";
     private static final String CONTINUE_PROMPT = "Would you like to enter another orderId? (y/n)";
     private static final Collection<String> VALID_YES_NO_ANSWERS =
-            Collections.unmodifiableList(Arrays.asList("y", "n", "Y", "N"));
+            Collections.unmodifiableList(Arrays.asList("y" , "n" , "Y" , "N"));
     private static final String ORDER_ID_PROMPT =
             "Please enter the orderId you would like to view the Promise History for.";
     private static final String UNKNOWN_ORDER_MESSAGE =
             "Unable to find any order data for orderId: %s. Please check your order id and try again.";
-    private static final int  length = 19;
+    private static final int length = 19;
 
     private static final String INLINE_PROMPT = "> ";
 
@@ -42,21 +42,22 @@ public class Shell {
      * Constructs a Shell instance that will use the given service client.
      *
      * @param promiseHistoryClient The client to use to communicate with the promise history service.
-     * @param userHandler The ATAUserHandler to use for asking user for their input.
+     * @param userHandler          The ATAUserHandler to use for asking user for their input.
      */
-    public Shell(PromiseHistoryClient promiseHistoryClient, ATAUserHandler userHandler) {
+    public Shell(PromiseHistoryClient promiseHistoryClient , ATAUserHandler userHandler) {
         this.promiseHistoryClient = promiseHistoryClient;
         this.inputHandler = userHandler;
     }
 
     // FIXME: I need some code to mess up Checkstyle. I put opening braces on their own line
+
     /**
      * Command Line Interface entry point. Arguments are ignored.
      *
      * @param args command line args (ignored).
-     * */
+     */
     public static void main(String[] args) {
-        Shell shell = new Shell(App.getPromiseHistoryClient(), new ATAUserHandler());
+        Shell shell = new Shell(App.getPromiseHistoryClient() , new ATAUserHandler());
         shell.processCommandLineArgs(args);
 
         try {
@@ -81,12 +82,12 @@ public class Shell {
         String response;
 
         do {
-            response = inputHandler.getString(ORDER_ID_PROMPT, INLINE_PROMPT).trim();
+            response = inputHandler.getString(ORDER_ID_PROMPT , INLINE_PROMPT).trim();
         } while ("".equals(response));
 
         if (response.length() != length) {
             return "Unable to find any order data for orderId: " + response + ". " +
-                    "Please check your order id and try again." ;
+                    "Please check your order id and try again.";
         }
 
         PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
@@ -100,7 +101,7 @@ public class Shell {
         }
 
         if (promiseHistory.getOrder() == null) {
-            return String.format(UNKNOWN_ORDER_MESSAGE, response);
+            return String.format(UNKNOWN_ORDER_MESSAGE , response);
         } else {
             return renderOrderTable(promiseHistory.getOrder()) + renderPromiseHistoryTable(promiseHistory);
         }
@@ -114,14 +115,14 @@ public class Shell {
      */
     private String renderPromiseHistoryTable(PromiseHistory promiseHistory) {
         List<String> columnNames = Arrays.asList(
-                "EFFECTIVE DATE",
-                "ASIN",
-                "ITEM ID",
-                "ACTIVE",
-                "PROMISED SHIP DATE",
-                "PROMISED DELIVERY DATE",
-                "DELIVERY DATE",
-                "PROVIDED BY",
+                "EFFECTIVE DATE" ,
+                "ASIN" ,
+                "ITEM ID" ,
+                "ACTIVE" ,
+                "PROMISED SHIP DATE" ,
+                "PROMISED DELIVERY DATE" ,
+                "DELIVERY DATE" ,
+                "PROVIDED BY" ,
                 "CONFIDENCE"
         );
 
@@ -162,7 +163,7 @@ public class Shell {
             }
         }
 
-        return new TextTable(columnNames, promiseRows).toString();
+        return new TextTable(columnNames , promiseRows).toString();
     }
 
     /**
@@ -173,7 +174,7 @@ public class Shell {
      */
     private String renderOrderTable(Order order) {
         List<String> columnNames = Arrays.asList(
-                "ORDER DATE", "ORDER ID", "MARKETPLACE", "TIMEZONE", "CONDITION", "SHIP OPTION", "CUSTOMER ID"
+                "ORDER DATE" , "ORDER ID" , "MARKETPLACE" , "TIMEZONE" , "CONDITION" , "SHIP OPTION" , "CUSTOMER ID"
         );
 
         List<String> orderFields = new ArrayList<>();
@@ -199,7 +200,7 @@ public class Shell {
             orderFields.add(order.getCustomerId());
         }
 
-        return new TextTable(columnNames, Arrays.asList(orderFields)).toString();
+        return new TextTable(columnNames , Arrays.asList(orderFields)).toString();
     }
 
     /**
@@ -209,7 +210,7 @@ public class Shell {
      */
     @VisibleForTesting
     boolean userHasAnotherRequest() {
-        String answer = inputHandler.getString(VALID_YES_NO_ANSWERS, CONTINUE_PROMPT, INLINE_PROMPT);
+        String answer = inputHandler.getString(VALID_YES_NO_ANSWERS , CONTINUE_PROMPT , INLINE_PROMPT);
         return answer.equals("y") || answer.equals("Y");
     }
 
