@@ -69,5 +69,23 @@ When:
 Then:
     exception happens in promiseHistoryClient and PromiseHistory.getPromiseHistoryByOrderID()
 
+________________________________________________________________________________________________________________________
+Test:
+
+Mastery Task Test:
+./gradlew -q clean TCT
+
+Checkstyle Test:
+./gradlew clean :checkstyleMain
+
+Bug Test:
+./gradlew clean :spotbugsMain
+
+Jacoco Test:
+./gradlew build :jacocoTestCoverageVerification
+
+Integration Test:
+./gradlew -q clean IRT
+
 
 

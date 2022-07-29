@@ -91,10 +91,10 @@ public class Shell {
         }
 
         PromiseHistory promiseHistory = promiseHistoryClient.getPromiseHistoryByOrderId(response);
-        if (promiseHistory.getOrder().orderId == null &&
-                promiseHistory.getOrder().orderDate == null &&
-                promiseHistory.getOrder().marketplaceId == null &&
-                promiseHistory.getOrder().shipOption == null) {
+        if (promiseHistory.getOrder().getOrderId() == null &&
+                promiseHistory.getOrder().getOrderDate() == null &&
+                promiseHistory.getOrder().getMarketplaceId() == null &&
+                promiseHistory.getOrder().getShipOption() == null) {
 
             return "";
 
