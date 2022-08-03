@@ -5,10 +5,16 @@ import com.amazon.ata.deliveringonourpromise.dao.OrderDao;
 import com.amazon.ata.deliveringonourpromise.dao.PromiseDao;
 import com.amazon.ata.deliveringonourpromise.data.OrderDatastore;
 import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
+import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.OrderFulfillmentServiceClient;
+import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.ServiceInterface;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.promisehistoryservice.PromiseHistoryClient;
 import com.amazon.ata.deliverypromiseservice.service.DeliveryPromiseService;
+import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.ordermanipulationauthority.OrderManipulationAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Provides inversion of control for the DeliveringOnOurPromise project by instantiating all of the
@@ -17,6 +23,14 @@ import com.amazon.ata.ordermanipulationauthority.OrderManipulationAuthority;
 public class App {
     /* don't instantiate me */
     private App() {}
+
+    public static OrderFulfillmentServiceClient getOrderFulfillmentServiceClient() {
+        return new OrderFulfillmentServiceClient(getOrderFulfillmentService());
+    }
+
+    public static OrderFulfillmentService getOrderFulfillmentService() {
+        return new OrderFulfillmentService(getOrderDatastore(), getDeliveryPromiseService());
+    }
 
     /**
      * Fetch a new PromiseHistoryClient with all of its dependencies loaded for use in the Shell!
@@ -36,10 +50,16 @@ public class App {
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
+
+    /**
+     * creates an array list of different service clients.
+     * @return returns a new PromiseDao
+     */
     public static PromiseDao getPromiseDao() {
-        return new PromiseDao(getDeliveryPromiseServiceClient(),
-                              getOrderManipulationAuthorityClient()
-        );
+        List<ServiceInterface> services = new ArrayList<>();
+        services.add(getDeliveryPromiseServiceClient());
+        services.add(getOrderFulfillmentServiceClient());
+        return new PromiseDao(services, getOrderManipulationAuthorityClient());
     }
 
     // service clients

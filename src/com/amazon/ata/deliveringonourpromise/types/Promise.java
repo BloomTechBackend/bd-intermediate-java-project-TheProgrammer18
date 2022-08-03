@@ -40,7 +40,10 @@ public class Promise {
     private String promiseProvidedBy;
     private int confidence;
 
-    private Promise() {}
+    /**
+     * creates a Promise.
+     */
+    public Promise() {}
 
     /**
      * Creates a new builder for populating a Promise.

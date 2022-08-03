@@ -1,6 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.dao;
 
-import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
+import com.amazon.ata.deliveringonourpromise.orderfulfillmentservice.ServiceInterface;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.ordermanipulationauthority.OrderResult;
@@ -15,18 +15,19 @@ import java.util.List;
  * DAO implementation for Promises.
  */
 public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
-    private DeliveryPromiseServiceClient dpsClient;
-    private OrderManipulationAuthorityClient omaClient;
+    private List<ServiceInterface> services = new ArrayList<>();
 
+    private  OrderManipulationAuthorityClient omaClient;
     /**
      * PromiseDao constructor, accepting service clients for DPS and OMA.
-     * @param dpsClient DeliveryPromiseServiceClient for DAO to access DPS
+     * @param services Service clients
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public PromiseDao(DeliveryPromiseServiceClient dpsClient, OrderManipulationAuthorityClient omaClient) {
-        this.dpsClient = dpsClient;
+    public PromiseDao(List<ServiceInterface> services, OrderManipulationAuthorityClient omaClient) {
         this.omaClient = omaClient;
+        this.services = services;
     }
+
 
     /**
      * Returns a list of all Promises associated with the given order item ID.
@@ -42,12 +43,13 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
 
         // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
         // Set delivery date
-        Promise dpsPromise = dpsClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-        if (dpsPromise != null) {
-            dpsPromise.setDeliveryDate(itemDeliveryDate);
-            promises.add(dpsPromise);
+        for (int i = 0; i < services.size(); i++) {
+            Promise service = services.get(i).getPromiseByOrderItemId(customerOrderItemId);
+            if (service != null) {
+                service.setDeliveryDate(itemDeliveryDate);
+                promises.add(service);
+            }
         }
-
         return promises;
     }
 
